@@ -7,4 +7,11 @@ Simplemente basta con enumerar tareas que hay que realizar escribiendo playbooks
 
 Ansible también organiza las aplicaciones instaladas por playbooks para que se relacionen correctamente entre si.
 
+### Inventory
+Es una colección organizada de máquinas, hosts o nodos. 
+Esta colección organizada ayuda a que los playbooks puedan ejecutarse de una manera mas ordenada
+
+### Playbooks
+Permite gestionar uno o varios servidores o máquinas. 
+Playbooks utiliza "inventory" para ejecutar las tareas de manera ordenada en las máquinas
 
