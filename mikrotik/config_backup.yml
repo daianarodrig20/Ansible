@@ -1,0 +1,54 @@
+---
+
+- name: "Config actual"
+
+  ### Si es un solo equipo
+  # hosts: router1
+  ### Si es un conjunto de equipos
+  #
+
+  hosts: ROUTERS
+  gather_facts: no
+
+
+  tasks:
+
+    ### Prueba equipos mikrotiks
+
+    - name: Ver configuracion actual
+      routeros_command:
+        commands: /export terse
+      register: version_output
+
+    - name: Display facts variables
+      debug:
+        var: version_output
+
+    - name: Guardar configuracion
+      copy:
+        content: "{{ version_output.stdout[0] }}"
+        dest: "/home/ubuntu/mikrotiks-backups/backups-{{ inventory-hostname }}.txt"
+
+- name: GIT SECTION
+  hosts: localhost
+
+  tasks:
+
+    - name: print time
+      command: date
+      register: time
+      changed_when: false
+      delegate_to: localhost
+      run_once: yes
+    - name: git commands
+      shell: |
+        git add .
+        git commit -m "Device Backup on {{time.stdout }}"
+        git push
+      args:
+        chdir: /home/ubuntu/mikrotik-backups
+      delegate_to: localhost
+      run_once: yes
+...
+
+
